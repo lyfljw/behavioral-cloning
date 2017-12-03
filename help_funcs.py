@@ -2,7 +2,6 @@ import csv
 import cv2
 import numpy as np
 from sklearn.utils import shuffle
-import matplotlib.image as mpimg
 
 # @open csv file
 def open_file(csv_name):
@@ -28,6 +27,13 @@ def open_file(csv_name):
     return lines[1:-1]   # first line is description
 
 def read_rgb(file_name):
+    """
+    read an image in RBG channel
+    :param
+        file_name:  a string of the path of the image file
+    :return:
+        a numpy array of the image in RGB mode.
+    """
     image = cv2.imread(file_name)
     return cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
@@ -150,9 +156,6 @@ def get_training_data(lines):
         image, steer = random_trans(image, steer)
         images.append(image)
         steers.append(steer)
-
-
-
     return shuffle(np.array(images), np.array(steers))
 
 
@@ -168,6 +171,13 @@ def pre_process(image):
     return image
 
 def read_valid(csv_file):
+    """
+    read a csv file generate by the simulator
+    :param
+        csv_file: a string of the path of the file name
+    :return:
+        images and steering angles
+    """
     lines = open_file(csv_name=csv_file)
     examples = len(lines)
     X = np.empty([examples*3,66,200,3])
@@ -183,14 +193,3 @@ def read_valid(csv_file):
 
     return shuffle(X, y)
 
-
-test_image_name = "./IMG/center_2016_12_01_13_31_13_686.jpg"
-#
-test_image = cv2.imread(test_image_name)
-# # cv2.imshow("123",(take_vertice(test_image)))
-
-# for i in range(20):
-#     kk, b = random_trans(test_image,1)
-#     cv2.imshow("1234", kk)
-#     cv2.waitKey(150)
-#
